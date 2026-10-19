@@ -1,0 +1,784 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>College Student Management</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background: #14213d;
+    color: white;
+    padding: 25px 15px;
+}
+
+.logo {
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 1.5;
+    margin-bottom: 30px;
+}
+
+.logo span {
+    color: #60a5fa;
+}
+
+.nav-btn {
+    display: block;
+    width: 100%;
+    padding: 13px;
+    margin: 6px 0;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: #cbd5e1;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+    background: #2563eb;
+    color: white;
+}
+
+.main {
+    flex: 1;
+    min-width: 0;
+    padding: 25px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.topbar h1 {
+    font-size: 25px;
+}
+
+.subtitle {
+    color: #64748b;
+    margin-top: 7px;
+    font-size: 14px;
+}
+
+.admin {
+    background: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 15px;
+    margin-bottom: 22px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 4px solid #2563eb;
+}
+
+.stat-card.green {
+    border-color: #16a34a;
+}
+
+.stat-card.purple {
+    border-color: #9333ea;
+}
+
+.stat-card p {
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.stat-card h2 {
+    font-size: 25px;
+}
+
+.panel {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 22px;
+    box-shadow: 0 3px 12px #0f172a0a;
+}
+
+.panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+h2.section-title {
+    font-size: 21px;
+    margin-bottom: 18px;
+}
+
+h3 {
+    font-size: 17px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 15px;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: white;
+    font: inherit;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 2px solid #bfdbfe;
+    border-color: #2563eb;
+}
+
+.btn {
+    display: inline-block;
+    padding: 11px 16px;
+    background: #2563eb;
+    color: white;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background: #1d4ed8;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+th {
+    background: #f8fafc;
+    color: #475569;
+}
+
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+.message {
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.success {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.error {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.help {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 8px;
+}
+
+.required {
+    color: #dc2626;
+}
+
+@media (max-width: 1000px) {
+    .form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .layout {
+        display: block;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .sidebar nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 4px;
+    }
+
+    .main {
+        padding: 15px;
+    }
+
+    .form-grid,
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar h1 {
+        font-size: 21px;
+    }
+}
+</style>
+</head>
+
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+    <div class="logo">
+       KVSR  College Management
+        <br>
+        <span>Students & Marks</span>
+    </div>
+
+    <nav>
+        <button class="nav-btn active"
+                data-page="dashboard">🏠 Dashboard</button>
+
+        <button class="nav-btn"
+                data-page="students">👨‍🎓 Students</button>
+
+        <button class="nav-btn"
+                data-page="marks">📝 Marks</button>
+
+        <a href="{% url 'admin:index' %}"
+           class="nav-btn">⚙️ Admin Panel</a>
+    </nav>
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+    <div>
+        <h1 id="page-title">College Dashboard</h1>
+        <p class="subtitle">
+            Student details and examination marks
+        </p>
+    </div>
+
+    <div class="admin">Administrator</div>
+</header>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="message {{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<!-- DASHBOARD -->
+<section class="section active" id="dashboard">
+
+    <div class="stats">
+        <div class="stat-card">
+            <p>Total Students</p>
+            <h2>{{ total_students }}</h2>
+        </div>
+
+        <div class="stat-card green">
+            <p>Total Marks Records</p>
+            <h2>{{ total_marks }}</h2>
+        </div>
+
+        <div class="stat-card purple">
+            <p>Departments</p>
+            <h2>7</h2>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-head">
+            <h3>Student Overview</h3>
+
+            <button class="btn"
+                    type="button"
+                    onclick="showPage('students')">
+                Add Student
+            </button>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Roll Number</th>
+                        <th>Name</th>
+                        <th>Department</th>
+                        <th>Year</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for s in students %}
+                    <tr>
+                        <td>{{ s.roll_number }}</td>
+                        <td>{{ s.full_name }}</td>
+                        <td>{{ s.get_department_display }}</td>
+                        <td>{{ s.year }}</td>
+                        <td>{{ s.email }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5">No student records found.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-head">
+            <h3>Recent Examination Marks</h3>
+
+            <button class="btn"
+                    type="button"
+                    onclick="showPage('marks')">
+                Add Marks
+            </button>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Roll No.</th>
+                        <th>Student</th>
+                        <th>Subject</th>
+                        <th>Semester</th>
+                        <th>Total</th>
+                        <th>Grade</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for m in marks_records %}
+                    <tr>
+                        <td>{{ m.student.roll_number }}</td>
+                        <td>{{ m.student.full_name }}</td>
+                        <td>{{ m.subject_name }}</td>
+                        <td>{{ m.semester }}</td>
+                        <td>{{ m.total }}/100</td>
+                        <td>{{ m.grade }}</td>
+                        <td>{{ m.result }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7">No marks recorded.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>
+
+<!-- STUDENT REGISTRATION -->
+<section class="section" id="students">
+
+    <h2 class="section-title">Student Registration</h2>
+
+    <div class="panel">
+        <h3>Add Student Details</h3>
+        <br>
+
+        <form method="post"
+              action="{% url 'add_student' %}"
+              id="student-form">
+
+            {% csrf_token %}
+
+            <div class="form-grid">
+
+                {% for field in student_form %}
+                    <div class="field">
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                            <span class="required">*</span>
+                        </label>
+
+                        {{ field }}
+
+                        {% for error in field.errors %}
+                            <p class="help" style="color:#dc2626">
+                                {{ error }}
+                            </p>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+            </div>
+
+            <p class="help">
+                Roll number and email must be unique.
+                Phone must contain exactly 10 digits.
+            </p>
+
+            <br>
+
+            <button class="btn" type="submit">
+                Save Student
+            </button>
+        </form>
+    </div>
+
+    <div class="panel">
+        <div class="panel-head">
+            <h3>Student List</h3>
+
+            <form method="get"
+                  action="{% url 'dashboard' %}"
+                  style="display:flex;gap:8px;max-width:400px">
+
+                <input type="search"
+                       name="q"
+                       value="{{ search }}"
+                       id="student-search"
+                       placeholder="Search students">
+
+                <button class="btn" type="submit">
+                    Search
+                </button>
+            </form>
+        </div>
+
+        <div class="table-wrap">
+            <table id="student-table">
+                <thead>
+                    <tr>
+                        <th>Roll Number</th>
+                        <th>Name</th>
+                        <th>Department</th>
+                        <th>Year</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for s in students %}
+                    <tr>
+                        <td>{{ s.roll_number }}</td>
+                        <td>{{ s.full_name }}</td>
+                        <td>{{ s.get_department_display }}</td>
+                        <td>{{ s.year }}</td>
+                        <td>{{ s.email }}</td>
+                        <td>{{ s.phone }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6">No students found.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>
+
+<!-- MARKS REGISTRATION -->
+<section class="section" id="marks">
+
+    <h2 class="section-title">Student Marks Management</h2>
+
+    <div class="panel">
+        <h3>Enter Student Marks</h3>
+        <br>
+
+        <form method="post"
+              action="{% url 'add_marks' %}"
+              id="marks-form">
+
+            {% csrf_token %}
+
+            <div class="form-grid">
+
+                {% for field in marks_form %}
+                    <div class="field">
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                            <span class="required">*</span>
+                        </label>
+
+                        {{ field }}
+
+                        {% for error in field.errors %}
+                            <p class="help" style="color:#dc2626">
+                                {{ error }}
+                            </p>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+            </div>
+
+            <p class="help">
+                Internal marks: 0–30.
+                External marks: 0–70.
+                Total is calculated automatically.
+            </p>
+
+            <p id="marks-preview"
+               class="help"
+               style="font-size:15px">
+                Total preview: — / 100
+            </p>
+
+            <br>
+
+            <button class="btn" type="submit">
+                Save Marks
+            </button>
+        </form>
+    </div>
+
+    <div class="panel">
+        <div class="panel-head">
+            <h3>All Student Marks</h3>
+        </div>
+
+        <div class="table-wrap">
+            <table id="marks-table">
+                <thead>
+                    <tr>
+                        <th>Roll No.</th>
+                        <th>Student Name</th>
+                        <th>Subject Code</th>
+                        <th>Subject</th>
+                        <th>Semester</th>
+                        <th>Internal</th>
+                        <th>External</th>
+                        <th>Total</th>
+                        <th>Grade</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for m in marks_records %}
+                    <tr>
+                        <td>{{ m.student.roll_number }}</td>
+                        <td>{{ m.student.full_name }}</td>
+                        <td>{{ m.subject_code }}</td>
+                        <td>{{ m.subject_name }}</td>
+                        <td>{{ m.semester }}</td>
+                        <td>{{ m.internal_marks }}</td>
+                        <td>{{ m.external_marks }}</td>
+                        <td>{{ m.total }}</td>
+                        <td>{{ m.grade }}</td>
+                        <td>{{ m.result }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="10">No marks found.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>
+
+</main>
+</div>
+
+<script>
+// DASHBOARD NAVIGATION
+function showPage(page) {
+    document.querySelectorAll(".section").forEach(section => {
+        section.classList.remove("active");
+    });
+
+    document.querySelectorAll(".nav-btn[data-page]").forEach(button => {
+        button.classList.remove("active");
+    });
+
+    document.getElementById(page).classList.add("active");
+
+    const button = document.querySelector(
+        '.nav-btn[data-page="' + page + '"]'
+    );
+
+    if (button) {
+        button.classList.add("active");
+    }
+
+    const titles = {
+        dashboard: "College Dashboard",
+        students: "Student Registration",
+        marks: "Marks Management"
+    };
+
+    document.getElementById("page-title").textContent =
+        titles[page];
+}
+
+document.querySelectorAll(".nav-btn[data-page]").forEach(button => {
+    button.addEventListener("click", function() {
+        showPage(this.dataset.page);
+    });
+});
+
+// STUDENT FORM VALIDATION
+document.getElementById("student-form").addEventListener(
+    "submit",
+    function(event) {
+
+        const phone = document.getElementById("id_phone").value.trim();
+        const email = document.getElementById("id_email").value.trim();
+        const roll = document.getElementById("id_roll_number").value.trim();
+
+        if (!/^[0-9]{10}$/.test(phone)) {
+            event.preventDefault();
+            alert("Enter a valid 10-digit phone number.");
+            return;
+        }
+
+     
+
+        if (!roll) {
+            event.preventDefault();
+            alert("Roll number is required.");
+        }
+    }
+);
+
+// MARKS VALIDATION AND TOTAL PREVIEW
+const internalInput = document.getElementById("id_internal_marks");
+const externalInput = document.getElementById("id_external_marks");
+const preview = document.getElementById("marks-preview");
+
+function calculateTotal() {
+    const internal = Number(internalInput.value);
+    const external = Number(externalInput.value);
+
+    const valid =
+        internalInput.value !== "" &&
+        externalInput.value !== "" &&
+        Number.isInteger(internal) &&
+        Number.isInteger(external) &&
+        internal >= 0 && internal <= 30 &&
+        external >= 0 && external <= 70;
+
+    if (valid) {
+        const total = internal + external;
+        preview.textContent = "Total: " + total + " / 100";
+    } else {
+        preview.textContent =
+            "Enter internal marks from 0–30 and external marks from 0–70.";
+    }
+}
+
+internalInput.addEventListener("input", calculateTotal);
+externalInput.addEventListener("input", calculateTotal);
+
+document.getElementById("marks-form").addEventListener(
+    "submit",
+    function(event) {
+
+        const internal = Number(internalInput.value);
+        const external = Number(externalInput.value);
+
+        if (
+            internalInput.value === "" ||
+            externalInput.value === "" ||
+            !Number.isInteger(internal) ||
+            !Number.isInteger(external) ||
+            internal < 0 || internal > 30 ||
+            external < 0 || external > 70
+        ) {
+            event.preventDefault();
+            alert("Please enter valid marks within the allowed limits.");
+        }
+    }
+);
+</script>
+
+</body>
+</html>

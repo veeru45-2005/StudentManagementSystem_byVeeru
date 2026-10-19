@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Form Example</title>
+</head>
+
+<body>
+
+    <h1>Student Form</h1>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <!-- RADIO BUTTON -->
+
+        <h3>Select Gender</h3>
+
+        <input type="radio" name="gender" value="Male">
+        Male
+
+        <input type="radio" name="gender" value="Female">
+        Female
+
+
+        <!-- CHECKBOX -->
+
+        <h3>Select Skills</h3>
+
+        <input type="checkbox" name="skills" value="Python">
+        Python
+
+        <input type="checkbox" name="skills" value="Django">
+        Django
+
+        <input type="checkbox" name="skills" value="HTML">
+        HTML
+
+        <input type="checkbox" name="skills" value="CSS">
+        CSS
+
+
+        <!-- DROPDOWN -->
+
+        <h3>Select City</h3>
+
+        <select name="city">
+
+            <option value="Chennai">Chennai</option>
+            <option value="Bangalore">Bangalore</option>
+            <option value="Hyderabad">Hyderabad</option>
+            <option value="Mumbai">Mumbai</option>
+
+        </select>
+
+        <br><br>
+
+        <button type="submit">Submit</button>
+
+    </form>
+
+    <h2>Output</h2>
+
+    {{ result }}
+
+    <!-- <input type="text" value="" readonly> -->
+
+</body>
+</html>
+

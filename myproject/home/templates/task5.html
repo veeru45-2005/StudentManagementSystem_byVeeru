@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<link rel="stylesheet" href="{% static '/css/s2.css' %}">
+ </head>
+<body>
+    <img src="{% static 'images/sai.jpg' %}">
+    <img src="/static/images/images.jpg">
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <h1>Hotel Room Booking</h1> 
+<h1>Create a hotel booking form.</h1>
+
+Customer Name: <input type="text" name="a"><br><br>
+
+Room Type:<br><br>
+<input type="radio"name='b' value="sigle">Single<br><br>
+<input type="radio"name='b' value="double">Double<br><br>
+<input type="radio"name='b' value="del">Deluxe<br><br>
+
+Location:<br><br>
+<select name="c">
+    <option>Hyderabad</option>
+     <option>ap</option>
+      <option>Hyderabad</option>
+       <option>nellore</option>
+</select>
+
+
+Facilities:<br><br>
+
+<input type="checkbox" name="d" value="wifi">WiFi<br><br>
+<input type="checkbox" name="d" value="break">Breakfast<br><br>
+<input type="checkbox" name="d" value="ac">AC<br><br>
+
+<button type="submit">submit</button>
+
+
+    </form>
+
+    <h1>name:{{n1}}</h1>
+    <h1>Room Type:{{n2}}</h1>
+    <h1>Location:{{n3}}</h1>
+    <h1>Facilities:{{n4}}</h1>
+    
+    
+</body>
+</html>
